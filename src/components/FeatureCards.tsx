@@ -1,26 +1,26 @@
 import React from "react";
-import { FaTools, FaLink, FaVoteYea, FaExclamationTriangle } from "react-icons/fa";
+import { WrenchScrewdriverIcon, LinkIcon, HandThumbUpIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 const features = [
   {
     title: "Predictive Maintenance",
     desc: "Smartly monitor assets and prevent failures",
-    icon: <FaTools size={36} color="#4b6cec" />
+    icon: <WrenchScrewdriverIcon className="h-9 w-9 text-blue-600" />
   },
   {
     title: "Blockchain Work Orders",
     desc: "Corruption-proof budgeting and tracking",
-    icon: <FaLink size={36} color="#4b6cec" />
+    icon: <LinkIcon className="h-9 w-9 text-blue-600" />
   },
   {
     title: "Citizen Voting",
     desc: "Participatory planning for the public",
-    icon: <FaVoteYea size={36} color="#4b6cec" />
+    icon: <HandThumbUpIcon className="h-9 w-9 text-blue-600" />
   },
   {
     title: "Issue Reporting",
     desc: "Raise complaints, track fixes in real time",
-    icon: <FaExclamationTriangle size={36} color="#4b6cec" />
+    icon: <ExclamationTriangleIcon className="h-9 w-9 text-blue-600" />
   }
 ];
 
