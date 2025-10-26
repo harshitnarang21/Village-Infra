@@ -1,17 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Sudarshan - Village Digital Twin Platform with AI-Powered Predictive Maintenance"
-    />
-    <title>सुदर्शन - Sudarshan | Village Digital Twin</title>
+    <title>Sudarshan Dashboard</title>
+    <meta name="description" content="Sudarshan - Ada.cx style dashboard built with React and Tailwind" />
+    <style>
+      html { scroll-behavior: smooth; }
+      .animate-fadeIn {
+        animation: fadeInUp 1s both;
+      }
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(24px);}
+        to   { opacity: 1;}
+      }
+    </style>
+    <!-- Google Fonts for extra polish (optional) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
   </head>
-  <body>
+  <body style="font-family: Inter, system-ui, sans-serif;">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
   </body>

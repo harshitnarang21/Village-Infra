@@ -1,447 +1,331 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import {
+  ChartBarIcon,
+  UserGroupIcon,
+  BanknotesIcon,
+  WrenchScrewdriverIcon,
+  HomeIcon,
+  DocumentChartBarIcon,
+  CurrencyRupeeIcon,
+  CheckBadgeIcon,
+  UserIcon,
+  MapPinIcon,
+  GlobeAltIcon,
+  BoltIcon,
+  ArrowRightOnRectangleIcon
+} from '@heroicons/react/24/outline';
 
-const App: React.FC = () => {
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import LoginPage from './components/LoginPage';
+import Dashboard from './pages/Dashboard';
+import Analytics from './pages/Analytics';
+import Reports from './pages/Reports';
+import Profile from './pages/Profile';
+import PredictiveMaintenance from './components/PredictiveMaintenance';
+import DatabasePredictiveMaintenance from './components/DatabasePredictiveMaintenance';
+import BlockchainTransparency from './components/BlockchainTransparency';
+import CitizenParticipation from './components/CitizenParticipation';
+import SustainabilityDashboard from './components/SustainabilityDashboard';
+import OfflineManager from './components/OfflineManager';
+import EnhancedVoiceInterface from './components/EnhancedVoiceInterface';
+import SmartChatbot from './components/SmartChatbot';
+import SmartVillageMap from './components/SmartVillageMap';
+import MapUSPShowcase from './components/MapUSPShowcase';
+import SmartEnergyDashboard from './components/SmartEnergyDashboard';
+import AgriculturalIntelligence from './components/AgriculturalIntelligence';
+import EmergencyResponseSystem from './components/EmergencyResponseSystem';
+import WaterResourceManagement from './components/WaterResourceManagement';
+import IssueReportingService from './components/IssueReportingService';
+import AdminIssuesDashboard from './components/AdminIssuesDashboard';
+
+const sidebarLinks = [
+  { icon: <HomeIcon className="h-5 w-5" />, emoji: "🏠", label: "Dashboard", path: "/dashboard" },
+  { icon: <MapPinIcon className="h-5 w-5" />, emoji: "🗺️", label: "Smart Map", path: "/map" },
+  { icon: <BoltIcon className="h-5 w-5" />, emoji: "⚡", label: "Energy", path: "/energy" },
+  { icon: <UserIcon className="h-5 w-5" />, emoji: "💧", label: "Water", path: "/water" },
+  { icon: <UserIcon className="h-5 w-5" />, emoji: "🌾", label: "Agriculture", path: "/agriculture" },
+  { icon: <UserIcon className="h-5 w-5" />, emoji: "🚨", label: "Emergency", path: "/emergency" },
+  { icon: <CheckBadgeIcon className="h-5 w-5" />, emoji: "🗳️", label: "Citizens", path: "/citizen" },
+  { icon: <UserIcon className="h-5 w-5" />, emoji: "🤖", label: "AI Chatbot", path: "/chatbot" },
+  { icon: <DocumentChartBarIcon className="h-5 w-5" />, emoji: "📋", label: "Report Issue", path: "/report-issue" },
+  { icon: <DocumentChartBarIcon className="h-5 w-5" />, emoji: "👨‍💼", label: "Admin Issues", path: "/admin-issues" },
+  { icon: <DocumentChartBarIcon className="h-5 w-5" />, emoji: "🤖", label: "Maintenance", path: "/ai-maintenance" },
+  { icon: <UserIcon className="h-5 w-5" />, emoji: "👤", label: "Profile", path: "/profile" },
+];
+
+const stats = [
+  { icon: <UserGroupIcon className="h-6 w-6 text-white" />, label: "Village Population", value: "3,810", color: "from-blue-500 to-blue-600" },
+  { icon: <WrenchScrewdriverIcon className="h-6 w-6 text-white" />, label: "Infrastructure Health", value: "96%", color: "from-green-500 to-green-600" },
+  { icon: <BanknotesIcon className="h-6 w-6 text-white" />, label: "Annual Budget", value: "₹2.1Cr", color: "from-yellow-500 to-yellow-600" },
+  { icon: <ChartBarIcon className="h-6 w-6 text-white" />, label: "Connected Villages", value: "24", color: "from-purple-500 to-purple-600" },
+];
+
+const cards = [
+  { icon: "🤖", title: "AI Maintenance", desc: "Smart predictions for infrastructure health and maintenance scheduling.", path: "/maintenance" },
+  { icon: "💰", title: "Budget Tracker", desc: "Transparent budget allocation and expense tracking.", path: "/budget" },
+  { icon: "🗳️", title: "Community Voting", desc: "Real-time community decision making platform.", path: "/voting" },
+  { icon: "🌱", title: "Sustainability Score", desc: "Environmental impact and carbon footprint tracking.", path: "/sustainability" },
+];
+
+const activityFeed = [
+  { time: "2 min ago", text: "Water tank maintenance scheduled for Sector A", type: "maintenance", icon: "💧" },
+  { time: "5 min ago", text: "Budget allocation of ₹50,000 approved for road repair", type: "budget", icon: "💰" },
+  { time: "12 min ago", text: "Community voted on new playground proposal", type: "voting", icon: "🗳️" },
+  { time: "23 min ago", text: "Solar panel efficiency increased by 12%", type: "sustainability", icon: "🌱" },
+];
+
+// Main Dashboard Component
+function DashboardContent() {
+  const { user } = useAuth();
+  const [currentPage, setCurrentPage] = useState('dashboard');
+
+  const renderPageContent = () => {
+    switch (currentPage) {
+      case 'dashboard':
+        return <DashboardStats />;
+      case 'ai maintenance':
+        return <PredictiveMaintenance />;
+      case 'db maintenance':
+        return <DatabasePredictiveMaintenance />;
+      case 'blockchain':
+        return <BlockchainTransparency />;
+      case 'citizen portal':
+        return <CitizenParticipation />;
+      case 'sustainability':
+        return <SustainabilityDashboard />;
+      case 'offline mode':
+        return <OfflineManager />;
+      case 'voice interface':
+        return <EnhancedVoiceInterface />;
+      case 'smart map':
+        return <SmartVillageMap />;
+      case 'map usps':
+        return <MapUSPShowcase />;
+      case 'energy':
+        return <SmartEnergyDashboard />;
+      case 'water':
+        return <WaterResourceManagement />;
+      case 'agriculture':
+        return <AgriculturalIntelligence />;
+      case 'emergency':
+        return <EmergencyResponseSystem />;
+      case 'citizens':
+        return <CitizenParticipation />;
+      case 'ai chatbot':
+        return <SmartChatbot />;
+      case 'report issue':
+        return <IssueReportingService />;
+      case 'admin issues':
+        return <AdminIssuesDashboard />;
+      case 'voice ai':
+        return <EnhancedVoiceInterface />;
+      case 'maintenance':
+        return <PredictiveMaintenance />;
+      case 'analytics':
+        return <Analytics />;
+      case 'profile':
+        return <Profile />;
+      default:
+        return <DashboardStats />;
+    }
+  };
+
   return (
-    <>
-      {/* COMPACT HEADER */}
-      <header className="ancient-header">
-        <div className="header-main">
-          <div className="container">
-            <div className="header-content">
-              <div className="site-emblem">🏛️</div>
-              
-              <div className="site-title-wrapper">
-                <h1 className="site-title">सुदर्शन</h1>
-                <p className="site-subtitle">Sudarshan - Village Digital Twin</p>
-              </div>
-              
-              <div className="site-emblem">🌾</div>
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
+      {/* Sidebar */}
+      <Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      
+      {/* Main Content */}
+      <div className="ml-0 md:ml-72 min-h-screen">
+        {/* Header */}
+        <Header />
         
-        <nav className="ancient-nav">
-          <div className="container">
-            <ul className="nav-menu">
-              <li><a href="#home" className="nav-link active">Home</a></li>
-              <li><a href="#usps" className="nav-link">Why Sudarshan</a></li>
-              <li><a href="#infrastructure" className="nav-link">Infrastructure</a></li>
-              <li><a href="#dashboard" className="nav-link">Dashboard</a></li>
-              <li><a href="#analytics" className="nav-link">Analytics</a></li>
-              <li><a href="#about" className="nav-link">About</a></li>
-              <li><a href="#contact" className="nav-link">Contact</a></li>
-            </ul>
-          </div>
-        </nav>
-      </header>
-
-      {/* MAIN CONTENT */}
-      <main>
-        {/* HERO SECTION */}
-        <section className="hero" id="home">
-          <div className="container">
-            <h1>Welcome to Sudarshan</h1>
-            <p>Empowering Rural India Through Intelligent Infrastructure Management</p>
-            <a href="#usps" className="btn">Explore Features</a>
-          </div>
-        </section>
-
-        {/* USP SECTION - FUNCTIONAL */}
-        <section className="section" id="usps">
-          <div className="container">
-            <h2>Why Choose Sudarshan?</h2>
-            <p style={{ textAlign: 'center', fontSize: '1.2rem', marginBottom: '3rem', color: 'var(--text-secondary)' }}>
-              India's first AI-powered village infrastructure digital twin platform
-            </p>
-            
-            <div className="grid grid-3">
-              <div className="card">
-                <div className="card-header">
-                  <div className="card-ornament">🤖</div>
-                  <h3 className="card-title">AI Predictive Maintenance</h3>
-                </div>
-                <p>
-                  <strong>Machine learning predicts infrastructure failures 2-4 weeks in advance.</strong> 
-                  Reduces maintenance costs by 30% and extends asset life by 20-40%. 
-                  Real-time IoT sensor integration for continuous monitoring and proactive maintenance scheduling.
-                </p>
-                <div style={{ marginTop: '1rem', padding: '0.5rem', background: 'rgba(0, 230, 118, 0.1)', borderLeft: '3px solid #00e676' }}>
-                  <strong>ROI:</strong> 30% cost reduction in first year
-                </div>
-              </div>
-
-              <div className="card">
-                <div className="card-header">
-                  <div className="card-ornament">⛓️</div>
-                  <h3 className="card-title">Blockchain Transparency</h3>
-                </div>
-                <p>
-                  <strong>Immutable audit trail for all budgets and work orders.</strong> 
-                  Smart contracts for automatic vendor payments based on milestone completion. 
-                  Public ledger accessible to all citizens ensuring complete transparency in governance.
-                </p>
-                <div style={{ marginTop: '1rem', padding: '0.5rem', background: 'rgba(0, 176, 255, 0.1)', borderLeft: '3px solid #00b0ff' }}>
-                  <strong>Impact:</strong> Zero corruption, 100% accountability
-                </div>
-              </div>
-
-              <div className="card">
-                <div className="card-header">
-                  <div className="card-ornament">🗳️</div>
-                  <h3 className="card-title">Citizen Participation</h3>
-                </div>
-                <p>
-                  <strong>Direct community voting on infrastructure priorities.</strong> 
-                  Issue reporting with photo/video evidence and real-time tracking. 
-                  Gamified engagement system with rewards for active participation and community building.
-                </p>
-                <div style={{ marginTop: '1rem', padding: '0.5rem', background: 'rgba(255, 152, 0, 0.1)', borderLeft: '3px solid #ff9800' }}>
-                  <strong>Engagement:</strong> 10x increase in citizen participation
-                </div>
-              </div>
-
-              <div className="card">
-                <div className="card-header">
-                  <div className="card-ornament">📡</div>
-                  <h3 className="card-title">Offline-First Design</h3>
-                </div>
-                <p>
-                  <strong>Functions seamlessly without internet connectivity.</strong> 
-                  Auto-sync when connection is restored with conflict resolution. 
-                  SMS alerts for critical updates ensuring communication even in remote areas.
-                </p>
-                <div style={{ marginTop: '1rem', padding: '0.5rem', background: 'rgba(156, 39, 176, 0.1)', borderLeft: '3px solid #9c27b0' }}>
-                  <strong>Coverage:</strong> 100% rural accessibility
-                </div>
-              </div>
-
-              <div className="card">
-                <div className="card-header">
-                  <div className="card-ornament">🗣️</div>
-                  <h3 className="card-title">Voice & Multi-Language</h3>
-                </div>
-                <p>
-                  <strong>Support for 22+ Indian languages including regional dialects.</strong> 
-                  WhatsApp bot integration for familiar user experience. 
-                  Voice interface for complete accessibility across all literacy levels.
-                </p>
-                <div style={{ marginTop: '1rem', padding: '0.5rem', background: 'rgba(255, 193, 7, 0.1)', borderLeft: '3px solid #ffc107' }}>
-                  <strong>Inclusion:</strong> Accessible to 95% of rural population
-                </div>
-              </div>
-
-              <div className="card">
-                <div className="card-header">
-                  <div className="card-ornament">🌱</div>
-                  <h3 className="card-title">Sustainability Dashboard</h3>
-                </div>
-                <p>
-                  <strong>Real-time carbon footprint tracking for all activities.</strong> 
-                  Energy consumption monitoring with efficiency recommendations. 
-                  ESG compliance reporting for sustainable development goals and environmental impact.
-                </p>
-                <div style={{ marginTop: '1rem', padding: '0.5rem', background: 'rgba(76, 175, 80, 0.1)', borderLeft: '3px solid #4caf50' }}>
-                  <strong>Green:</strong> 40% reduction in carbon emissions
-                </div>
-              </div>
-            </div>
-
-            {/* Competitive Advantages */}
-            <div style={{ marginTop: '4rem' }}>
-              <h3 style={{ textAlign: 'center', marginBottom: '2rem', fontSize: '2rem' }}>Competitive Advantages</h3>
-              <div className="grid grid-2">
-                <div className="card card-highlight">
-                  <p style={{ fontSize: '1.1rem', marginBottom: 0 }}>
-                    ✅ <strong>Only platform</strong> with AI predictive maintenance for rural India
-                  </p>
-                </div>
-                <div className="card card-highlight">
-                  <p style={{ fontSize: '1.1rem', marginBottom: 0 }}>
-                    ✅ <strong>First</strong> blockchain-verified infrastructure transparency system
-                  </p>
-                </div>
-                <div className="card card-highlight">
-                  <p style={{ fontSize: '1.1rem', marginBottom: 0 }}>
-                    ✅ <strong>Most accessible</strong> (offline, voice, 22+ languages)
-                  </p>
-                </div>
-                <div className="card card-highlight">
-                  <p style={{ fontSize: '1.1rem', marginBottom: 0 }}>
-                    ✅ <strong>Government-ready</strong> (complies with Digital India guidelines)
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* CTA */}
-            <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-              <a href="#contact" className="btn" style={{ marginRight: '1rem' }}>Request Demo</a>
-              <a href="#dashboard" className="btn">View Dashboard</a>
-            </div>
-          </div>
-        </section>
-
-        {/* DASHBOARD WIDGETS SECTION */}
-        <section className="section" id="dashboard">
-          <div className="container">
-            <h2>Infrastructure Overview</h2>
-            
-            <div className="grid grid-3">
-              <div className="widget">
-                <div className="widget-icon">💧</div>
-                <div className="widget-header">
-                  <h3 className="widget-title">Water Supply</h3>
-                </div>
-                <div className="widget-value">89%</div>
-                <p className="widget-label">System Efficiency</p>
-              </div>
-
-              <div className="widget">
-                <div className="widget-icon">⚡</div>
-                <div className="widget-header">
-                  <h3 className="widget-title">Electricity</h3>
-                </div>
-                <div className="widget-value">95%</div>
-                <p className="widget-label">Grid Coverage</p>
-              </div>
-
-              <div className="widget">
-                <div className="widget-icon">🛣️</div>
-                <div className="widget-header">
-                  <h3 className="widget-title">Roads</h3>
-                </div>
-                <div className="widget-value">78%</div>
-                <p className="widget-label">Road Condition</p>
-              </div>
-
-              <div className="widget">
-                <div className="widget-icon">🏥</div>
-                <div className="widget-header">
-                  <h3 className="widget-title">Healthcare</h3>
-                </div>
-                <div className="widget-value">92%</div>
-                <p className="widget-label">Facility Access</p>
-              </div>
-
-              <div className="widget">
-                <div className="widget-icon">🏫</div>
-                <div className="widget-header">
-                  <h3 className="widget-title">Education</h3>
-                </div>
-                <div className="widget-value">88%</div>
-                <p className="widget-label">School Enrollment</p>
-              </div>
-
-              <div className="widget">
-                <div className="widget-icon">🌾</div>
-                <div className="widget-header">
-                  <h3 className="widget-title">Agriculture</h3>
-                </div>
-                <div className="widget-value">85%</div>
-                <p className="widget-label">Crop Yield Index</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* INFRASTRUCTURE FEATURES SECTION */}
-        <section className="section" id="infrastructure">
-          <div className="container">
-            <h2>Key Features</h2>
-            
-            <div className="grid grid-3">
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="card-title">Real-time Monitoring</h3>
-                  <div className="card-ornament">❖</div>
-                </div>
-                <p>Monitor all village infrastructure in real-time with IoT sensors and smart devices for immediate insights and proactive maintenance.</p>
-              </div>
-
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="card-title">Data Analytics</h3>
-                  <div className="card-ornament">❖</div>
-                </div>
-                <p>Advanced analytics and reporting tools to make informed decisions for infrastructure development and resource optimization.</p>
-              </div>
-
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="card-title">Resource Planning</h3>
-                  <div className="card-ornament">❖</div>
-                </div>
-                <p>Optimize resource allocation and plan sustainable development initiatives with predictive models and scenario analysis.</p>
-              </div>
-
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="card-title">Digital Twin Technology</h3>
-                  <div className="card-ornament">❖</div>
-                </div>
-                <p>Create virtual replicas of physical infrastructure to simulate, predict, and optimize performance before implementation.</p>
-              </div>
-
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="card-title">Community Engagement</h3>
-                  <div className="card-ornament">❖</div>
-                </div>
-                <p>Enable citizen participation through feedback mechanisms, grievance redressal, and transparent communication channels.</p>
-              </div>
-
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="card-title">Smart Governance</h3>
-                  <div className="card-ornament">❖</div>
-                </div>
-                <p>Implement evidence-based policy making with comprehensive dashboards, alerts, and automated reporting systems.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ANALYTICS SECTION */}
-        <section className="section" id="analytics">
-          <div className="container">
-            <h2>Analytics & Reports</h2>
-            <div className="card">
-              <div className="card-header">
-                <h3 className="card-title">Comprehensive Data Insights</h3>
-                <div className="card-ornament">❖</div>
-              </div>
-              <p>
-                Our analytics platform provides deep insights into village infrastructure performance, 
-                resource utilization patterns, and development trends. Generate custom reports, visualize 
-                data through interactive charts, and export findings for stakeholder presentations.
-              </p>
-              <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-                <a href="#contact" className="btn">Request Demo</a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ABOUT SECTION */}
-        <section className="section" id="about">
-          <div className="container">
-            <h2>About Sudarshan Platform</h2>
-            <p>
-              Sudarshan (सुदर्शन) is India's first AI-powered digital twin platform designed specifically 
-              for village infrastructure monitoring and management. Built on modern technology principles 
-              while respecting traditional values, our platform enables local governments and communities 
-              to track, analyze, and improve essential services.
-            </p>
-            <p>
-              By combining IoT sensors, machine learning, blockchain transparency, and user-friendly interfaces, 
-              Sudarshan empowers decision-makers with real-time insights and predictive capabilities for 
-              sustainable rural development.
-            </p>
-            <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-              <a href="#contact" className="btn">Get Started</a>
-            </div>
-          </div>
-        </section>
-
-        {/* CONTACT SECTION */}
-        <section className="section" id="contact">
-          <div className="container">
-            <h2>Contact Us</h2>
-            <div className="grid grid-3">
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="card-title">Email</h3>
-                  <div className="card-ornament">✉️</div>
-                </div>
-                <p>info@sudarshan.gov.in</p>
-                <p>support@sudarshan.gov.in</p>
-              </div>
-
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="card-title">Phone</h3>
-                  <div className="card-ornament">📞</div>
-                </div>
-                <p>Toll-Free: 1800-XXX-XXXX</p>
-                <p>Office: +91-XXXX-XXXXXX</p>
-              </div>
-
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="card-title">Location</h3>
-                  <div className="card-ornament">📍</div>
-                </div>
-                <p>Village Panchayat Office</p>
-                <p>Mon-Fri: 9:00 AM - 5:00 PM</p>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      {/* FOOTER */}
-      <footer className="ancient-footer">
-        <div className="container">
-          <div className="footer-ornament">❖ ❖ ❖</div>
-          
-          <div className="footer-content">
-            <div className="footer-section">
-              <h4>About Sudarshan</h4>
-              <p>India's first AI-powered digital twin platform for village infrastructure monitoring, management, and sustainable development planning.</p>
-            </div>
-            
-            <div className="footer-section">
-              <h4>Quick Links</h4>
-              <ul>
-                <li><a href="#usps">Why Sudarshan</a></li>
-                <li><a href="#infrastructure">Infrastructure</a></li>
-                <li><a href="#dashboard">Dashboard</a></li>
-                <li><a href="#analytics">Analytics</a></li>
-                <li><a href="#about">About Us</a></li>
-              </ul>
-            </div>
-            
-            <div className="footer-section">
-              <h4>Resources</h4>
-              <ul>
-                <li><a href="#help">Help Center</a></li>
-                <li><a href="#faq">FAQs</a></li>
-                <li><a href="#guidelines">Guidelines</a></li>
-                <li><a href="#api">API Documentation</a></li>
-                <li><a href="#support">Support</a></li>
-              </ul>
-            </div>
-            
-            <div className="footer-section">
-              <h4>Contact Us</h4>
-              <ul>
-                <li>📧 info@sudarshan.gov.in</li>
-                <li>📞 +91-XXXX-XXXXXX</li>
-                <li>📍 Village Panchayat Office</li>
-                <li>🕐 Mon-Fri, 9 AM - 5 PM</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="footer-bottom">
-            <p>© 2025 Sudarshan Digital Twin Platform. All Rights Reserved.</p>
-            <p>
-              <a href="#privacy">Privacy Policy</a> | 
-              <a href="#terms">Terms of Service</a> | 
-              <a href="#accessibility">Accessibility</a>
-            </p>
-            <p>Powered by Government of India Initiative</p>
-          </div>
-        </div>
-        
-        <div className="footer-disclaimer">
-          <div className="container">
-            <p>This is an official Government of India website. Content is updated and maintained by the respective department.</p>
-          </div>
-        </div>
-      </footer>
-    </>
+        {/* Page Content */}
+        <main className="p-6">
+          {renderPageContent()}
+        </main>
+      </div>
+    </div>
   );
-};
+}
+
+// Dashboard Stats Component
+function DashboardStats() {
+  return (
+    <div className="space-y-8">
+      {/* Village Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {stats.map((stat, i) => (
+          <div key={i} className="bg-white rounded-2xl shadow-lg border border-green-100 p-6 hover:shadow-xl transition-all duration-300">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600 mb-1">{stat.label}</p>
+                <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+              </div>
+              <div className={`p-3 rounded-xl bg-gradient-to-r ${stat.color}`}>
+                {stat.icon}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {cards.map((card, i) => (
+          <div key={i} className="bg-white rounded-2xl shadow-lg border border-green-100 p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer group">
+            <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">{card.icon}</div>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">{card.title}</h3>
+            <p className="text-gray-600 text-sm">{card.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Activity Feed */}
+      <div className="bg-white rounded-2xl shadow-lg border border-green-100 p-6">
+        <h3 className="text-xl font-bold text-gray-900 mb-6">Recent Village Activities</h3>
+        <div className="space-y-4">
+          {activityFeed.map((activity, i) => (
+            <div key={i} className="flex items-start gap-4 p-4 rounded-xl hover:bg-green-50 transition-colors duration-200">
+              <div className="text-2xl">{activity.icon}</div>
+              <div className="flex-1">
+                <p className="text-gray-800 font-medium">{activity.text}</p>
+                <p className="text-gray-500 text-sm mt-1">{activity.time}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+// Sidebar Component
+function Sidebar({ currentPage, setCurrentPage }: { currentPage: string; setCurrentPage: (page: string) => void }) {
+  const { user, logout } = useAuth();
+
+  return (
+    <div className="fixed left-0 top-0 h-full w-72 bg-white shadow-2xl border-r border-green-100 z-40">
+      {/* Logo */}
+      <div className="p-6 border-b border-green-100">
+        <div className="flex items-center gap-3">
+          <div className="text-3xl">🌾</div>
+          <div>
+            <h1 className="text-2xl font-bold text-green-800">Sudarshan</h1>
+            <p className="text-sm text-green-600">Village Infrastructure</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <nav className="p-4 space-y-2">
+        {sidebarLinks.map((link) => (
+          <button
+            key={link.path}
+            onClick={() => setCurrentPage(link.label.toLowerCase())}
+            className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 ${
+              currentPage === link.label.toLowerCase()
+                ? 'bg-green-100 text-green-800 shadow-md'
+                : 'text-gray-600 hover:bg-green-50 hover:text-green-700'
+            }`}
+          >
+            <div className="text-xl">{link.emoji}</div>
+            <span className="font-medium">{link.label}</span>
+          </button>
+        ))}
+      </nav>
+
+      {/* User Info & Logout */}
+      <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-green-100">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-full bg-green-200 flex items-center justify-center text-green-800 font-semibold">
+            {user?.name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'U'}
+          </div>
+          <div>
+            <p className="font-semibold text-gray-800">{user?.name}</p>
+            <p className="text-sm text-green-600 capitalize">{user?.role}</p>
+          </div>
+        </div>
+        <button
+          onClick={logout}
+          className="w-full flex items-center gap-3 px-4 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors duration-200"
+        >
+          <ArrowRightOnRectangleIcon className="h-5 w-5" />
+          <span className="font-medium">Logout</span>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// Header Component
+function Header() {
+  const { user } = useAuth();
+  
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good morning';
+    if (hour < 17) return 'Good afternoon';
+    return 'Good evening';
+  };
+
+  const getPersonalizedMessage = () => {
+    const greeting = getGreeting();
+    const firstName = user?.name?.split(' ')[0] || 'User';
+    return `${greeting}, ${firstName}!`;
+  };
+  
+  return (
+    <header className="bg-white shadow-sm border-b border-green-100 p-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-3xl font-bold text-green-800">Village Dashboard</h2>
+          <p className="text-green-600 mt-1">
+            {getPersonalizedMessage()} Ready to manage your village infrastructure today?
+          </p>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <button className="p-2 text-green-600 hover:bg-green-50 rounded-xl transition-colors duration-200">
+              <div className="text-2xl">🔔</div>
+            </button>
+            <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+// Protected Route Component
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated } = useAuth();
+  
+  if (!isAuthenticated) {
+    return <LoginPage />;
+  }
+  
+  return <>{children}</>;
+}
+
+// Main App Component
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/*" element={
+              <ProtectedRoute>
+                <DashboardContent />
+              </ProtectedRoute>
+            } />
+          </Routes>
+        </div>
+      </Router>
+    </AuthProvider>
+  );
+}
 
 export default App;
