@@ -257,7 +257,7 @@ const IssueReportingService: React.FC = () => {
             <div class="section-title">📎 ATTACHMENTS</div>
             <div class="field-value">
                 ${reportData.attachments.length > 0 
-                    ? reportData.attachments.map(file => `• ${file.name}`).join('<br>') 
+                    ? reportData.attachments.map(fileName => `• ${fileName}`).join('<br>') 
                     : 'No attachments uploaded'}
             </div>
         </div>
